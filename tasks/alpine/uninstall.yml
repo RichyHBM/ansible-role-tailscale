@@ -1,0 +1,13 @@
+---
+- name: Alpine | Remove Tailscale
+  become: true
+  community.general.apk:
+    name: "{{ tailscale_package }}"
+    state: '{{ state }}'
+
+- name: Alpine | Remove community edge repository
+  become: true
+  ansible.builtin.lineinfile:
+    dest: /etc/apk/repositories
+    line: 'http://dl-cdn.alpinelinux.org/alpine/edge/community'
+    state: absent

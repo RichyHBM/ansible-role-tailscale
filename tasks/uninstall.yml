@@ -56,3 +56,7 @@
 - name: Uninstall | OpenSUSE
   when: ansible_distribution in tailscale_opensuse_family_distros
   ansible.builtin.include_tasks: opensuse/uninstall.yml
+
+- name: Uninstall | Alpine
+  when: ansible_distribution == 'Alpine'
+  ansible.builtin.include_tasks: alpine/uninstall.yml
