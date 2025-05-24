@@ -3,10 +3,10 @@
 .PHONY: all
 all: lint test
 
-# Install Python 3.10 first
+# Install Python first
 .PHONY: install
 install:
-	poetry install --no-root
+	poetry install --with=dev
 	poetry run pre-commit install --install-hooks
 	poetry run ansible-galaxy collection install -r requirements.yml
 
@@ -16,7 +16,7 @@ clean:
 
 .PHONY: update
 update:
-	poetry update
+	poetry update --with=dev
 	poetry run pre-commit autoupdate
 
 .PHONY: lint
@@ -82,6 +82,14 @@ ifndef TAILSCALE_CI_KEY
 	$(error TAILSCALE_CI_KEY is not set)
 else
 	poetry run molecule test --scenario-name strategy-free
+endif
+
+.PHONY: test-reinstall
+test-reinstall:
+ifndef TAILSCALE_CI_KEY
+	$(error TAILSCALE_CI_KEY is not set)
+else
+	poetry run molecule test --scenario-name reinstall
 endif
 
 .PHONY: test-headscale
